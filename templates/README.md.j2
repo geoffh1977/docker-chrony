@@ -1,6 +1,9 @@
-# Simple Chrony Container #
+# {{ appName }} Container #
 
 ![clock picture](https://raw.githubusercontent.com/geoffh1977/chrony/master/images/clock.png)
+
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/{{ dockerUser }}/{{ finalImageName }}.svg?style=plastic)
+![GitHub](https://img.shields.io/github/license/{{ dockerUser }}/docker-{{ finalImageName }}.svg?style=plastic)
 
 ## Description ##
 This docker image provides a small chrony (NTP) image which will sync the local hardware clock and provide access to an NTP time service. It contains a basic chrony configuration file which attaches to the global NTP server pool.

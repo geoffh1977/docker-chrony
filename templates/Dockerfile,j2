@@ -1,10 +1,6 @@
 # Chrony NTP Docker Image
-ARG IMAGE_USER=geoffh1977
-ARG IMAGE_NAME=alpine
-ARG IMAGE_VERSION=latest
-
-FROM ${IMAGE_USER}/${IMAGE_NAME}:${IMAGE_VERSION}
-LABEL maintainer="geoffh1977 <geoffh1977@gmail.com>"
+FROM {{ dockerUser + "/" + buildImageName + ":" + buildImageVersion }}
+LABEL maintainer="{{ dockerUser }} <{{ dockerUserEmail }}>"
 
 # hadolint ignore=DL3002
 USER root
