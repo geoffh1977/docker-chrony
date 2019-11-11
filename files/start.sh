@@ -13,8 +13,12 @@ touch /var/lib/chrony/chrony.drift && \
 chown chrony:chrony -R /var/lib/chrony
 
 # Write New Config File If None Mapped In
-if [ ! -f "${CONFIG}" ]
+echo
+if [ -f "${CONFIG}" ]
 then
+  echo "Reading Mapping In Config File!"
+else
+  echo "Writing New Config File"
   mkdir /etc/chrony
   cat << EOF > "${CONFIG}"
 cmdallow ${CMD_CIDR}
@@ -27,6 +31,7 @@ EOF
   if [ "${SYNC_RTC}" = "true" ] ; then echo "rtcsync" >> "${CONFIG}" ; fi
   if [ "${ALLOW_CIDR}" != "" ] ; then echo "allow ${ALLOW_CIDR}" >> "${CONFIG}" ; fi
 fi
+echo
 
 # Run Chrony Daemon
 chronyd -d -s -f "${CONFIG}"
