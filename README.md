@@ -14,6 +14,8 @@ There are a number of environment variables which can be configured when the con
 - **SYNC_RTC -** Sync the realtime clock on the machine/instance the service is running. This is enabled by default.
 - **NTP_SERVER -** The NTP server to get the time to set from. The default is pool.ntp.org.
 
+There is also an option to map in a pre-written configuration file to /etc/chrony.conf - if this file exists it will be used and the auto configuration setup will be skipped.
+
 ## Running The Container
 In order for the chrony service to operate correctly, the following command is required. Access needs to be granted to the SYS-TIME capability. The below command would enable external access to the NTP for other clients to set the time:
 
