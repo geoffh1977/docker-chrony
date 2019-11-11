@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Download The Manifest Tool
+curl -s -Lo manifest-tool https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
+chmod +x ./manifest-tool
+
+IMAGE_MISSING="false"
+
+echo
+for IMAGE_TAG in $(ls *.dockerfile | cut -d"." -f1)
+do
+  if ./manifest-tool inspect ${DOCKER_REPO}:${IMAGE_TAG} 2> /dev/null
+  then
+    echo "Image ${DOCKER_REPO}:${IMAGE_TAG} Has Been Found."
+  else
+    echo "Image ${DOCKER_REPO}:${IMAGE_TAG} NOT FOUND!"
+    IMAGE_MISSING="true"
+  fi
+done
+echo
+
+# Push Manifest File If All Images Available
+if [ "${IMAGE_MISSING}" = "false" ]
+then
+  ./manifest-tool push from-spec manifest.yaml
+fi
+
+rm -f ./manifest-tool
