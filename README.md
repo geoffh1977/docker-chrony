@@ -1,6 +1,6 @@
-# Chrony Container #
+# Chrony Docker Image #
 
-![clock picture](https://raw.githubusercontent.com/geoffh1977/docker-chrony/master/images/logo.png)
+![clock picture](https://raw.githubusercontent.com/{{ dockerUser }}/docker-{{ finalImageName }}/master/files/logo.png)
 
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/geoffh1977/chrony.svg?style=plastic)
 ![GitHub](https://img.shields.io/github/license/geoffh1977/docker-chrony.svg?style=plastic)

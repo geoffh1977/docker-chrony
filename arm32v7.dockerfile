@@ -1,9 +1,16 @@
-# Chrony NTP Docker Image
-FROM geoffh1977/alpine:latest
-LABEL maintainer="geoffh1977 <geoffh1977@gmail.com>"
+### Build ARMv7 Container
+### Download QEMU, see https://github.com/docker/hub-feedback/issues/1261
+FROM alpine:3 AS builder
+ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz
 
-# hadolint ignore=DL3002
-USER root
+# hadolint ignore=DL3018,DL3019,DL4006
+RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
+
+### Build Final Container
+FROM arm32v7/alpine:3
+
+# Add QEMU
+COPY --from=builder qemu-arm-static /usr/bin
 
 # Install The Chrony Package
 # hadolint ignore=DL3018
@@ -22,4 +29,4 @@ CMD ["-d", "-s","-f","/etc/chrony.conf"]
 HEALTHCHECK --interval=60s --timeout=5s CMD chronyc tracking > /dev/null
 
 # Copy The Configuration Into The Container
-COPY config/chrony.conf /etc/chrony.conf
+COPY files/chrony.conf /etc/chrony.conf

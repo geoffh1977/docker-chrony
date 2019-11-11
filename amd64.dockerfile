@@ -1,9 +1,5 @@
-# Chrony NTP Docker Image
-FROM {{ dockerUser + "/" + buildImageName + ":" + buildImageVersion }}
-LABEL maintainer="{{ dockerUser }} <{{ dockerUserEmail }}>"
-
-# hadolint ignore=DL3002
-USER root
+## Build Standard AMD64 Container
+FROM alpine:3
 
 # Install The Chrony Package
 # hadolint ignore=DL3018
@@ -22,4 +18,4 @@ CMD ["-d", "-s","-f","/etc/chrony.conf"]
 HEALTHCHECK --interval=60s --timeout=5s CMD chronyc tracking > /dev/null
 
 # Copy The Configuration Into The Container
-COPY config/chrony.conf /etc/chrony.conf
+COPY files/chrony.conf /etc/chrony.conf
