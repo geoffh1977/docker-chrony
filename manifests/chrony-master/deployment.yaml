@@ -21,19 +21,19 @@ spec:
       - key: "node-role.kubernetes.io/master"
         operator: "Exists"
         effect: "NoSchedule"
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: application
-                operator: In
-                values:
-                - chrony
-              - key: type
-                operator: In
-                values:
-                  - slave
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: application
+      #           operator: In
+      #           values:
+      #           - chrony
+      #         - key: type
+      #           operator: In
+      #           values:
+      #             - slave
             topologyKey: "kubernetes.io/hostname"
       containers:
       - image: geoffh1977/chrony
