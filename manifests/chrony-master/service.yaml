@@ -1,0 +1,15 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: chrony-master
+  namespace: chrony-system
+spec:
+  selector:
+    application: chrony
+    type: master
+  type: ClusterIP
+  ports:
+    - protocol: UDP
+      port: 123
+      name: ntp

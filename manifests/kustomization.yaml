@@ -1,0 +1,9 @@
+---
+namespace: chrony-system
+
+resources:
+  - namespace.yaml
+
+bases:
+  - ./chrony-master/
+  - ./chrony-slave/
