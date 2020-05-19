@@ -1,0 +1,85 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: chrony-master
+  namespace: chrony-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: chrony
+      type: master
+  template:
+    metadata:
+      name: chrony-master
+      labels:
+        application: chrony
+        type: master
+    spec:
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: application
+                operator: In
+                values:
+                - chrony
+              - key: type
+                operator: In
+                values:
+                  - slave
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - image: geoffh1977/chrony
+        name: chrony-master
+        env:
+          - name: NTP_SERVER
+            value: pool.ntp.org
+          - name: ALLOW_CIDR
+            value: 0.0.0.0/0
+          - name: SYNC_RTC
+            value: 'true'
+        ports:
+        - name: ntp
+          containerPort: 123
+          protocol: UDP
+        readinessProbe:
+          exec:
+            command:
+              - chronyc
+              - tracking
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - chronyc
+            - tracking
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          timeoutSeconds: 5
+        securityContext:
+          capabilities:
+            add:
+            - SYS_TIME
+        volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+            readOnly: true
+          - name: tzdata-config
+            mountPath: /etc/timezone
+            readOnly: true
+      volumes:
+        - name: tz-config
+          hostPath:
+            path: /etc/localtime
+        - name: tzdata-config
+          hostPath:
+            path: /etc/timezone
