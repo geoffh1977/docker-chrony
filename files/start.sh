@@ -29,7 +29,9 @@ local stratum 10
 makestep 1.0 3
 EOF
   if [ "${SYNC_RTC}" = "true" ] ; then echo "rtcsync" >> "${CONFIG}" ; fi
-  if [ "${ALLOW_CIDR}" != "" ] ; then echo "allow ${ALLOW_CIDR}" >> "${CONFIG}" ; fi
+  if [ "${ALLOW_CIDR}" != "" ] ; then
+      echo "${ALLOW_CIDR}" | tr ',' '\n' | while read CIDR; do echo "allow ${CIDR}"; done >> "${CONFIG}"
+  fi
 fi
 echo
 
